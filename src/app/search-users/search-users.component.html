@@ -20,7 +20,9 @@
       <ng-container matColumnDef="avatar_url">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let row">
-          <img loading="lazy" class="avatar_img" src="{{row.avatar_url}}" alt="" srcset="">
+          <div class="avatar_img">
+            <img loading="lazy" src="{{row.avatar_url}}" alt="" srcset="">
+          </div>
         </td>
       </ng-container>
 
