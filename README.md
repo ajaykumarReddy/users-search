@@ -6,6 +6,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+## Highlights
+
+1) Implemented server side pagination to load only few records
+2) Added lazy for images to load only visible images data.
+3) Used Rxjs fork join to parellel calls to get the data faster.
+4) I would like to add most stylish design to look better more.
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
