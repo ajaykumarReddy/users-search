@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { catchError, debounceTime, EMPTY, filter, forkJoin, map, merge, mergeMap, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, forkJoin, map, merge, mergeMap, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { User, UsersResponse, userTableData } from '../types';
 
 @Component({
@@ -25,6 +25,8 @@ export class SearchUsersComponent implements OnInit {
   isLoadingResults = false;
   isRateLimitReached = false;
 
+  value!: string;
+
   private destroy$ = new Subject();
 
   constructor(private http: HttpClient) { }
@@ -34,7 +36,13 @@ export class SearchUsersComponent implements OnInit {
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    const searchInput$ = this.searchInputControl.valueChanges.pipe(filter(value => value.length > 2));
+    const searchInput$ = this.searchInputControl.valueChanges
+      .pipe(
+        filter(value => value.length > 2),
+        debounceTime(1000),
+        distinctUntilChanged()
+      );
+
     const sort$ = this.sort.sortChange;
     const paginator$ = this.paginator.page;
     merge(searchInput$, sort$, paginator$).pipe(
